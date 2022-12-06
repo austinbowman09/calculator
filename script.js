@@ -2,6 +2,7 @@ let firstNumber = null;
 let secondNumber = null;
 let operator = null;
 let displayValue = null;
+let clearInputWhenNumberIsEntered = null;
 
 const buttons = document.querySelectorAll(".button");
 buttons.forEach(button => {
@@ -20,6 +21,10 @@ function selectButtonAction() {
 
 function numberEntered(number) {
     if(!operator) {
+        if(clearInputWhenNumberIsEntered) {
+            firstNumber = null;
+            clearInputWhenNumberIsEntered = false;
+        }
         if(!firstNumber) {
             firstNumber = parseInt(number);
         } else {
@@ -42,12 +47,23 @@ function operatorEntered(entry) {
         updateDisplayValue(result);
         resetGlobalVariables();
         firstNumber = result;
+        clearInputWhenNumberIsEntered = true;
     } else if (entry == "tip") {
         operator = entry;
         updateDisplayValue("Enter tip percentage");
     } else {
-        operator = entry;
-        updateDisplayValue(operator);
+        if (!operator) {
+            operator = entry;
+            updateDisplayValue(operator);
+        } else {
+            result = operate(operator,firstNumber,secondNumber);
+            updateDisplayValue(result);
+            resetGlobalVariables();
+            firstNumber = result;
+            operator = entry;
+            updateDisplayValue(operator);
+        }
+
     }
 }
 
@@ -159,4 +175,5 @@ function resetGlobalVariables() {
     secondNumber = null;
     operator = null;
     displayValue = null;
+    clearInputWhenNumberIsEntered = null;
 }
