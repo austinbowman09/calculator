@@ -20,6 +20,10 @@
     background-color: orange;
 }
 
+#tip {
+    background-color: lightgray;
+}
+
 .row {
     display: flex;
     gap: 10px;

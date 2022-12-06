@@ -37,18 +37,38 @@ function numberEntered(number) {
 }
 
 function operatorEntered(entry) {
-    if(entry != "=") {
-        operator = entry;
-        updateDisplayValue(operator);
-    } else {
+    if (entry == "=") {
         result = operate(operator,firstNumber,secondNumber);
         updateDisplayValue(result);
+        resetGlobalVariables();
+        firstNumber = result;
+    } else if (entry == "tip") {
+        operator = entry;
+        updateDisplayValue("Enter tip percentage");
+    } else {
+        operator = entry;
+        updateDisplayValue(operator);
     }
-
 }
 
 function miscEntered(entry) {
-    console.log("Miscellaneous button functionality still needs to be added...")
+    switch(entry) {
+        case "clear":
+            updateDisplayValue("0");
+            resetGlobalVariables();
+            break;
+        case "negative":
+            if(!operator) {
+                firstNumber *= -1;
+                updateDisplayValue(firstNumber);
+            } else {
+                secondNumber *= -1;
+                updateDisplayValue(secondNumber);
+            }
+            break;
+        case "tip":
+            console.log("This button doesn't currently do anything...");
+    }
 }
 
 function storeValue() {
@@ -108,6 +128,10 @@ function division(a,b) {
     return a/b;
 }
 
+function calculateTip(bill, tipPercentage) {
+    return bill*tipPercentage/100;
+}
+
 function operate(operator,a,b) {
     let result = 0;
     switch(operator) {
@@ -123,6 +147,16 @@ function operate(operator,a,b) {
         case '/':
             result = division(a,b);
             break;
+        case 'tip':
+            result = calculateTip(a,b);
+            break;
     }
     return result;
+}
+
+function resetGlobalVariables() {
+    firstNumber = null;
+    secondNumber = null;
+    operator = null;
+    displayValue = null;
 }
